@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Form from './components/Form'
 import Input from './components/Input'
 import People from './components/People'
+import contactService from './services/contacts'
 
 
 const App = () => {
@@ -11,14 +11,13 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
 
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/people')
-      .then(response => {
-        setPeople(response.data)
+  useEffect(() => {
+    contactService
+      .getAll()
+      .then(initialContacts => {
+        setPeople(initialContacts)
       })
-  }
-  useEffect(hook, [])
+  }, [])
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -43,10 +42,21 @@ const App = () => {
         number: newNumber
       }
     
-      setPeople(people.concat(personObject))
-      setNewName('')
-      setNewNumber('')
+      contactService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPeople(people.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
     }
+  }
+
+  const removeContact = id => {
+    console.log('deleting')
+    contactService
+      .remove(id)
+      .then(setPeople(people.filter(person => person.id !== id)))
   }
 
   const peopleToShow = newSearch === ''
@@ -75,7 +85,7 @@ const App = () => {
         ]}
       />
       <h2>Numbers</h2>
-      <People peopleToShow={peopleToShow} />
+      <People peopleToShow={peopleToShow} deleteFunc={removeContact} />
     </div>
   )
 }
