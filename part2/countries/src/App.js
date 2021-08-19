@@ -61,8 +61,36 @@ const Country = ({ country }) => {
         })}
         <p />
         <img src={country.flag} alt={'the flag of ' + country.name} width='150' />
+        <Weather city={country.capital} />
     </div>
   )
+}
+
+const Weather = ({ city }) => {
+  const [ weatherData, setWeatherData ] = useState(null)
+
+  useEffect(() => {
+    axios
+      .get(`http://api.weatherstack.com/current?access_key=${process.env.REACT_APP_API_KEY}&query=${city}`)
+      .then(response => {
+        setWeatherData(response.data)
+      })
+  }, [city])
+
+  if (weatherData === null) {
+    return(
+      <p>loading...</p>
+    )
+  } else {
+    return(
+      <div>
+        <h2>Weather in {city}</h2>
+        <p><b>temperature: </b>{weatherData.current.temperature} celsius</p>
+        <img src={weatherData.current.weather_icons[0]} alt={'weather icon'} />
+        <p><b>wind: </b>{weatherData.current.wind_speed} km/h direction {weatherData.current.wind_dir}</p>
+      </div>
+    )
+  }
 }
 
 const App = () => {
@@ -78,6 +106,8 @@ const App = () => {
   }
   useEffect(hook, [])
 
+
+
   const handleSearch = (event) => {
     setNewSearch(event.target.value)
   }
@@ -88,7 +118,11 @@ const App = () => {
         value={newSearch}
         onChange={handleSearch}
       />
-      <Countries data={countries} searchTerm={newSearch} buttonClick={setNewSearch} />
+      <Countries 
+        data={countries} 
+        searchTerm={newSearch} 
+        buttonClick={setNewSearch} 
+      />
     </div>
   )
 }
