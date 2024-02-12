@@ -115,3 +115,25 @@ describe('favorite blog', () => {
     expect(result).toEqual(favorite)
   })
 })
+
+describe('most blogs', () => {
+  const oneBlog = {
+    author: 'Edsger W. Dijkstra',
+    blogs: 1
+  }
+
+  test('when list has only one blog, equals to that', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual(oneBlog)
+  })
+
+  const mostLonger = {
+    author: "Robert C. Martin",
+    blogs: 3
+  }
+
+  test('mostBlogs should work correctly with longer list', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(mostLonger)
+  })
+})
