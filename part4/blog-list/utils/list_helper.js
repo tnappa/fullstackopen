@@ -54,9 +54,43 @@ const mostBlogs = (blogs) => {
   return returnVal
 }
 
+const mostLikes = (blogs) => {
+  var topAuthor = null
+  var topLikes = 0
+  var counts = new Map()
+
+  for (const blog of blogs) {
+    const author = blog.author
+    if (counts.has(author)) {
+      var count = counts.get(author)
+      count += blog.likes
+      counts.set(author, count)
+      if (count > topLikes) {
+        topLikes = count
+        topAuthor = author
+      }
+    } else {
+      count = blog.likes
+      counts.set(author, count)
+      if (topLikes == 0) {
+        topLikes = count
+        topAuthor = author
+      }
+    }
+  }
+
+  const returnVal = {
+    author: topAuthor,
+    likes: topLikes
+  }
+
+  return returnVal
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
