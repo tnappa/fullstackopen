@@ -1,3 +1,6 @@
+const { test, describe } = require('node:test')
+const assert = require('node:assert')
+
 const listHelper = require('../utils/list_helper')
 
 const listWithOneBlog = [
@@ -69,36 +72,36 @@ describe('dummy test', () => {
     const blogs = []
   
     const result = listHelper.dummy(blogs)
-    expect(result).toBe(1)
+    assert.strictEqual(result, 1)
   })
 })
 
 describe('total likes', () => {
   test('when list has only one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
-    expect(result).toBe(5)
+    assert.strictEqual(result, 5)
   })
 
   test('empty list should have 0 likes', () => {
     const result = listHelper.totalLikes(emptyList)
-    expect(result).toBe(0)
+    assert.strictEqual(result, 0)
   })
 
   test('summation should work correctly with longer list', () => {
     const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(36)
+    assert.strictEqual(result, 36)
   })
 })
 
 describe('favorite blog', () => {
   test('when list has only one blog, equals to that', () => {
     const result = listHelper.favoriteBlog(listWithOneBlog)
-    expect(result).toEqual(listWithOneBlog[0])
+    assert.deepStrictEqual(result, listWithOneBlog[0])
   })
 
   test('empty list does not have a favorite', () => {
     const result = listHelper.favoriteBlog(emptyList)
-    expect(result).toBe(null)
+    assert.deepStrictEqual(result, null)
   })
 
   const favorite = {
@@ -112,7 +115,7 @@ describe('favorite blog', () => {
 
   test('favorite should work correctly with longer list', () => {
     const result = listHelper.favoriteBlog(blogs)
-    expect(result).toEqual(favorite)
+    assert.deepStrictEqual(result, favorite)
   })
 })
 
@@ -124,7 +127,7 @@ describe('most blogs', () => {
 
   test('when list has only one blog, equals to that', () => {
     const result = listHelper.mostBlogs(listWithOneBlog)
-    expect(result).toEqual(oneBlog)
+    assert.deepStrictEqual(result, oneBlog)
   })
 
   const mostLonger = {
@@ -134,7 +137,7 @@ describe('most blogs', () => {
 
   test('mostBlogs should work correctly with longer list', () => {
     const result = listHelper.mostBlogs(blogs)
-    expect(result).toEqual(mostLonger)
+    assert.deepStrictEqual(result, mostLonger)
   })
 })
 
@@ -146,7 +149,7 @@ describe('most likes', () => {
 
   test('when list has only one blog, equals to that', () => {
     const result = listHelper.mostLikes(listWithOneBlog)
-    expect(result).toEqual(oneBlog)
+    assert.deepStrictEqual(result, oneBlog)
   })
 
   const mostLonger = {
@@ -156,6 +159,6 @@ describe('most likes', () => {
 
   test('mostLikes should work correctly with longer list', () => {
     const result = listHelper.mostLikes(blogs)
-    expect(result).toEqual(mostLonger)
+    assert.deepStrictEqual(result, mostLonger)
   })
 })
